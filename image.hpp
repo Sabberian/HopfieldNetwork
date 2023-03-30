@@ -60,6 +60,14 @@ public:
         return fheader_;
     }
 
+    int get_width(){
+        return iheader_.width;
+    }
+
+    int get_height(){
+        return iheader_.height;
+    }
+
     friend Image ReadImg(const std::string&);
     friend void WriteImg(Image&, const std::string&);
 };
@@ -68,7 +76,11 @@ Image ReadImg(const std::string&);
 
 void WriteImg(const std::vector<std::vector<uint8_t>>&, const std::string&);
 
+void WriteImg(const std::vector<std::vector<double>>&, const std::string&);
+
 void WriteImg(Image&, const std::string&);
+
+std::vector<std::vector<double>> ImageToMatrix(const Image&);
 
 template <typename T>
 void resize_matrix(std::vector<std::vector<T>>& matrix, int w, int h){
