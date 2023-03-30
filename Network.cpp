@@ -126,20 +126,70 @@ protected:
         return 1;
     }
 
+    void remove_weights(){
+        weights.clear();
+        weights.shrink_to_fit();
+    }
+
 public:
     const double N_COEFF = 0.15;
-//TODO: конструктор копирования, базовый, из файла
+
+    HopfieldNetwork(){neuron_count = 0;}
     HopfieldNetwork(int neuron_count) : neuron_count(neuron_count){
+        sample_count = 0;
         init_weights();
         init_states();
-    };
+    }
+    HopfieldNetwork(const std::string& path){
+        load_network(path);
+    }
+    HopfieldNetwork(const HopfieldNetwork& N){
+        neuron_count = N.neuron_count;
+        weights = N.weights;
+        neurons_states = N.neurons_states;
+        sample_count = N.sample_count;
+    }
+
     ~HopfieldNetwork(){
         weights.clear();
         weights.shrink_to_fit();
     }
 
-    void resize_network(int new_neuron_count){
+    HopfieldNetwork& operator=(const HopfieldNetwork N){
+        reset_network();
+        neuron_count = N.neuron_count;
+        sample_count = N.sample_count;
+        weights = N.weights;
+        neurons_states = N.neurons_states;
+        return *this;
+    }
 
+    void clear_weights(){
+        for (int i = 0; i < weights.size(); i++){
+            for (int j = 0; j < weights[0].size(); j++){
+                weights[0][i] = 0;
+            }
+        }
+        sample_count = 0;
+    }
+
+    void reset_network(){
+        remove_weights();
+        neurons_states.clear();
+        sample_count = 0;
+        neuron_count = 0;
+    }
+
+    void resize_network(int new_neuron_count){
+        neuron_count = new_neuron_count;
+
+        weights.clear();
+        weights.shrink_to_fit();
+        neurons_states.clear();
+
+        sample_count = 0;
+        init_weights();
+        init_states();
     }
 
     void init_weights(){
@@ -166,7 +216,7 @@ public:
         if (neuron_count != weights.size()){
             throw MatrixSizeException("Weight's matrix size doesn't match number of neurons");
         }
-        f << neuron_count << " ";
+        f << neuron_count << " " << sample_count << " ";
         for (int i = 0; i < neuron_count; i++){
             for (int j = 0; j < neuron_count; j++){
                 f << weights[i][j] << " ";
@@ -182,7 +232,7 @@ public:
             throw std::invalid_argument("Can't open file");
         }
 
-        f >> neuron_count;
+        f >> neuron_count >> sample_count;
         resize_matrix(weights, neuron_count, neuron_count);
 
         for (int i = 0; i < neuron_count; i++){
@@ -190,6 +240,7 @@ public:
                 f >> weights[i][j];
             }
         }
+        init_states();
     }
 
     void load_sample(const std::vector<double>& sample, bool check_sample_count=1){
@@ -245,7 +296,6 @@ public:
     }
 
     std::vector<double> compare(const Matrix_D& img_matrix){
-        //TODO: 0 to 1 check
         return compare(expand_matrix(img_matrix));
     }
 
@@ -313,13 +363,3 @@ int main(){
     net.save_network("./net.hop");
     // net.print_weights();
 }
-// int main(){
-//     HopfieldNetwork net(9);
-//     net.load_network("./net.hop");
-//     // net.print_weights();
-//     std::vector<std::vector<double>> b = {{1, 1, 0, 1}, {1, 0, 1, 0}, {1, 1, 0, 0}, {0, 0, 1, 0}};
-//     std::vector<double> c = net.compare(b);
-//     std::vector<std::vector<double>> k = conv_array(c, 4, 4);
-//     WriteImg(k, "new.bmp");
-//     print_matrix(k);
-// }
