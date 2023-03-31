@@ -73,7 +73,7 @@ template <typename T>
 void print_matrix(const Matrix_T& M){
     for (auto i:M){
         for (auto j:i){
-            std::cout << j << " ";
+            std::cout << std::to_string(j) << " ";
         }
         std::cout<< "\n";
     }
@@ -276,9 +276,7 @@ public:
 
     void load_sample(const std::string& path, bool check_sample_count=1){
         //Load sample from bmp file
-        Image img = ReadImg(path);
-        Matrix_D matrix = ImageToMatrix(img);
-        load_sample(matrix, check_sample_count);
+        load_sample(ImageToMatrix(ReadImg(path)), check_sample_count);
     }
 
     void load_sample(const Matrix_D& sample, bool check_sample_count=1){
@@ -299,8 +297,18 @@ public:
         return compare(expand_matrix(img_matrix));
     }
 
+    std::vector<double> compare(const std::string& img_path){
+        //Clear noise from img by path
+        return compare(ImageToMatrix(Image(img_path)));
+    }
+
+    std::vector<double> compare(const Image& img){
+        //Clear noise from img by path
+        return compare(ImageToMatrix(img));
+    }
+
     std::vector<double> compare(const std::vector<double>& img_vector){
-        //Asinchronous noise clearing from template converted to vector (template values must be 0 to 1)
+        //Asynchronous noise clearing from template converted to vector (template values must be 0 to 1, 0 - white 1 - black)
         n_state sprev, snew;
         bool is_unchanged[neuron_count];
 
@@ -361,5 +369,5 @@ int main(){
     }
     WriteImg(k, "new.bmp");
     net.save_network("./net.hop");
-    // net.print_weights();
+    net.print_weights();
 }

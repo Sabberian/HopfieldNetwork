@@ -45,6 +45,14 @@ private:
 public:
     std::vector<std::vector<uint8_t>> matrix_;
 
+    Image(){}
+
+    Image(const std::string& path);
+
+    Image(const Image&);
+
+    Image& operator=(const Image&);
+
     void Clear(){
         matrix_.clear();
         matrix_.shrink_to_fit();
@@ -80,7 +88,13 @@ void WriteImg(const std::vector<std::vector<double>>&, const std::string&);
 
 void WriteImg(Image&, const std::string&);
 
-std::vector<std::vector<double>> ImageToMatrix(const Image&);
+Image& negative(Image&);
+
+std::vector<std::vector<double>>& negative(std::vector<std::vector<double>>& m);
+
+std::vector<std::vector<uint8_t>>& negative(std::vector<std::vector<uint8_t>>& m);
+
+std::vector<std::vector<double>> ImageToMatrix(const Image& img, bool reversed=true);
 
 template <typename T>
 void resize_matrix(std::vector<std::vector<T>>& matrix, int w, int h){

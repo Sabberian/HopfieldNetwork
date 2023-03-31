@@ -3,6 +3,24 @@
 #include "image.hpp"
 #include "errors.cpp"
 
+Image::Image(const Image& img){
+    iheader_ = img.iheader_;
+    fheader_ = img.fheader_;
+    matrix_ = img.matrix_;
+}
+
+Image& Image::operator=(const Image& img){
+    Clear();
+    iheader_ = img.iheader_;
+    fheader_ = img.fheader_;
+    matrix_ = img.matrix_;
+    return *this;
+}
+
+Image::Image(const std::string& path){
+    *this = ReadImg(path);
+}
+
 Image ReadImg(const std::string& path){
     Image img;
     std::ifstream f;
@@ -136,13 +154,40 @@ void WriteImg(Image& img, const std::string& path){
     }
 }
 
-std::vector<std::vector<double>> ImageToMatrix(const Image& img){
-    //convert Image to matrix double black -> 1, white -> 0
+Image& negative(Image& img){
+    for (int i = 0; i < img.get_height(); i++){
+        for (int j = 0; j < img.get_width(); j++){
+            img.matrix_[i][j] = 255 - img.matrix_[i][j];
+        }
+    }
+    return img;
+}
+
+std::vector<std::vector<uint8_t>>& negative(std::vector<std::vector<uint8_t>>& m){
+    for (int i = 0; i < m.size(); i++){
+        for (int j = 0; j < m[0].size(); j++){
+            m[i][j] = 255 - m[i][j];
+        }
+    }
+    return m;
+}
+
+std::vector<std::vector<double>>& negative(std::vector<std::vector<double>>& m){
+    for (int i = 0; i < m.size(); i++){
+        for (int j = 0; j < m[0].size(); j++){
+            m[i][j] = 1 - m[i][j];
+        }
+    }
+    return m;
+}
+
+std::vector<std::vector<double>> ImageToMatrix(const Image& img, bool reversed){
+    //convert Image to matrix double black -> 1, white -> 0 if reversed is true
     std::vector<std::vector<double>> res;
     resize_matrix(res, img.matrix_[0].size(), img.matrix_.size());
     for (int i=0; i < img.matrix_.size(); ++i){
         for (int j=0; j < img.matrix_[0].size(); ++j){
-            res[i][j] = (255 - img.matrix_[i][j]) / 255.;
+            res[i][j] = reversed ? (255 - img.matrix_[i][j]) / 255. : img.matrix_[i][j] / 255.;
         }
     }
     return res;
