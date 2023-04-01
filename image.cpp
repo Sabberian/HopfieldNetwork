@@ -193,7 +193,10 @@ std::vector<std::vector<double>> ImageToMatrix(const Image& img, bool reversed){
     return res;
 }
 
-// int main(){
-//     std::vector<std::vector<uint8_t>> v = {{255, 0, 255, 0, 255}, {128, 30, 0, 0, 0}, {128, 60, 60, 128, 0}};
-//     WriteImg(v, "./new.bmp");
-// }
+template <typename T>
+void resize_matrix(std::vector<std::vector<T>>& matrix, int w, int h){
+    matrix.resize(h);
+    for (auto& row: matrix){
+        row.resize(w);
+    }
+}
