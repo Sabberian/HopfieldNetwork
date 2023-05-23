@@ -5,8 +5,8 @@
 #include <fstream>
 #include <vector>
 
-#ifndef IMAGE_H
-#define IMAGE_H
+#ifndef IMAGE_HPP
+#define IMAGE_HPP
 struct __attribute__((packed)) File_header {
     char name[2];
     unsigned int size;
@@ -100,4 +100,5 @@ std::vector<std::vector<double>> ImageToMatrix(const Image& img, bool reversed=t
 
 template <typename T>
 void resize_matrix(std::vector<std::vector<T>>& matrix, int w, int h);
+
 #endif

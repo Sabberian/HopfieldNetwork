@@ -3,8 +3,8 @@
 #include <vector>
 #include "image.hpp"
 
-#ifndef HOPFIELD_H
-#define HOPFIELD_H
+#ifndef HOPFIELD_HPP
+#define HOPFIELD_HPP
 
 #define Matrix_D std::vector<std::vector<double>>
 
@@ -58,6 +58,8 @@ public:
     void load_sample(const std::string& path, bool check_sample_count=1);
 
     void load_sample(const Matrix_D& sample, bool check_sample_count=1);
+
+    void load_sample(const Image& img, bool check_sample_count=1);
 
     n_state get_neuron_state(int neuron_index) const;
 

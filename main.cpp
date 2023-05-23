@@ -6,6 +6,7 @@
 #include "image.hpp"
 #include "hopfield.hpp"
 #include "errors.cpp"
+#include "gui.hpp"
 #define Matrix_D std::vector<std::vector<double>>
 #define Matrix_I std::vector<std::vector<int>> 
 #define Matrix_T std::vector<std::vector<T>>
@@ -28,27 +29,12 @@ Matrix_T conv_array(const std::vector<T>& v, int w, int h){
 }
 
 int main(){
-    std::cout << "Hello Hopfield!\n";
-    HopfieldNetwork net(16);
-    std::vector<std::vector<double>> a = {{1, 0, 0, 1}, {0, 1, 1, 0}, {0, 1, 1, 0}, {1, 0, 0, 1}};
-    net.load_sample(a, false);
-    a = {{0, 1, 0, 1}, {1, 0, 1, 0}, {0, 1, 0, 1}, {1, 0, 1, 0}};
-    net.load_sample(a, false);
-    // a = {{1, 1, 0, 0}, {0, 0, 1, 1}, {1, 1, 0, 0}, {0, 0, 1, 1}};
-    // net.load_sample(a, true);
-    // std::vector<std::vector<double>> b = {{1, 1, 1, 1}, {1, 1, 1, 0}, {0, 1, 1, 0}, {1, 1, 0, 1}};
-    std::vector<std::vector<double>> b = {{1, 1, 0, 1}, {1, 0, 1, 0}, {1, 1, 0, 0}, {0, 0, 1, 0}};
-    std::vector<double> c = net.compare(b);
-    std::vector<std::vector<double>> k = conv_array(c, 4, 4);
-    for (auto i: k){
-        for (auto j : i){
-            std::cout << j << " ";
-        }
-        std::cout<<"\n";
-    }
-    WriteImg(k, "new.bmp");
-    net.save_network("./net.hop");
-    net.print_weights();
-    std::vector<std::vector<double>> a = {{0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}};
-    WriteImg(a, "base.bmp");
+    // std::cout << "Hello Hopfield!\n";
+    // HopfieldNetwork net(25);
+    // net.load_sample("./samples/1.bmp");
+    // std::vector<double> a = net.compare("./samples/smile.bmp");
+    // std::vector<std::vector<double>> b = conv_array(a, 5, 5);
+    // WriteImg(negative(static_cast<std::vector<std::vector<double>>&>(b)), "new.bmp");
+    // net.save_network("./net.hop");
+    drawPixelArt();
 }

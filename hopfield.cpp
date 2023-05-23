@@ -254,6 +254,11 @@ void HopfieldNetwork::load_sample(const Matrix_D& sample, bool check_sample_coun
     load_sample(s, check_sample_count);
 }
 
+void HopfieldNetwork::load_sample(const Image& img, bool check_sample_count=1){
+    //Load sample from Image
+    load_sample(ImageToMatrix(img), check_sample_count);
+}
+
 n_state HopfieldNetwork::get_neuron_state(int neuron_index) const{
     int sum = 0;
     for (int i=0; i < neuron_count; i++){
@@ -263,6 +268,7 @@ n_state HopfieldNetwork::get_neuron_state(int neuron_index) const{
 }
 
 std::vector<double> HopfieldNetwork::compare(const Matrix_D& img_matrix){
+    //Clear noise from img by matrix
     return compare(expand_matrix(img_matrix));
 }
 
