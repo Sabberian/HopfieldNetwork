@@ -1,53 +1,34 @@
-#ifndef PIXELART_HPP
-#define PIXELART_HPP
-
+#pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <iostream>
+#include "image.hpp"
 
-// Function to draw pixel art
-void drawPixelArt(const std::vector<std::vector<uint8_t>>& matrix = {}, int pixelSize = 1)
-{
-    int height = matrix.size();
-    int width = (height > 0) ? matrix[0].size() : 0;
+#ifndef GUI_HPP
+#define GUI_HPP
 
-    const int windowWidth = width * pixelSize;   // Window width in pixels
-    const int windowHeight = height * pixelSize; // Window height in pixels
+const int InputWindowWidth = 600;
+const int InputWindowHeight = 600;
+const int DrawingWindowWidth = 600;
+const int DrawingWindowHeight = 600;
+const int BorderWidth = 1;
+const sf::Color BackgroundColor = sf::Color(245, 245, 220);
+const sf::Color BorderColor = sf::Color(192, 192, 192);
+const sf::Color Gray = sf::Color(50, 50, 50);
+const int ButtonWidth = 80;
+const int ButtonHeight = 40;
+const int CheckBoxSize = 20;
 
-    sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Pixel Art"); // Create a window
-    window.setFramerateLimit(60); // Limit the frame rate to 60 FPS
+void clearDesk(std::vector<std::vector<uint8_t>>& matrix);
 
-    sf::Image image;
-    int imageHeight = matrix.size();
-    int imageWidth = (imageHeight > 0) ? matrix[0].size() : 0;
-    image.create(imageWidth, imageHeight);
+void saveMatrixAsIamge(std::vector<std::vector<uint8_t>>& matrix);
 
-    for (int y = 0; y < imageHeight; ++y)
-    {
-        for (int x = 0; x < imageWidth; ++x)
-        {
-            uint8_t color = (matrix.empty() || matrix[y][x] == 1) ? 255 : 0; // Convert 1 to white (255) and 0 to black (0)
-            image.setPixel(x, y, sf::Color(color, color, color));
-        }
-    }
+void compareImage(std::vector<std::vector<uint8_t>>& matrix);
 
-    sf::Texture texture;
-    texture.loadFromImage(image); // Load the image into a texture
+void learnImage(std::vector<std::vector<uint8_t>>& matrix);
 
-    sf::Sprite sprite(texture); // Create a sprite with the texture
+void runPixelArtEditor(int fieldSize);
 
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed) // Check for window close event
-                window.close();
-        }
+void make_gui();
 
-        window.clear(sf::Color::White); // Clear the window with white color
-        window.draw(sprite); // Draw the sprite
-        window.display(); // Update the window
-    }
-}
-
-#endif  // PIXELART_HPP
+#endif
