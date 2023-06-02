@@ -1,4 +1,4 @@
-#pragma ones
+#pragma onсe
 
 #include <vector>
 #include "image.hpp"

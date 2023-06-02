@@ -8,6 +8,7 @@
 #include "image.hpp"
 #include "hopfield.hpp"
 #include "errors.cpp"
+
 #define Matrix_D std::vector<std::vector<double>>
 
 sf::Font font;

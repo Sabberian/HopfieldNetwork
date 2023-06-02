@@ -1,5 +1,3 @@
-#pragma ones
-
 #include "image.hpp"
 #include "errors.cpp"
 

@@ -1,7 +1,6 @@
-#pragma ones
+#define SFML_STATIC
 
 #include <vector>
-
 #include <math.h>
 #include "image.hpp"
 #include "hopfield.hpp"

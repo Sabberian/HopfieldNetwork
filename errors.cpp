@@ -1,5 +1,3 @@
-#pragma ones
-
 #include <iostream>
 #include <cstring>
 
